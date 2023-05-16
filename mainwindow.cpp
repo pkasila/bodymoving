@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->radioButton, &QRadioButton::clicked, this, &MainWindow::handleEnvironment);
     connect(ui->radioButton_2, &QRadioButton::clicked, this, &MainWindow::handleEnvironment);
 
-    connect(ui->checkBox, &QCheckBox::stateChanged, this, &MainWindow::draw);
+    connect(ui->checkBox, &QCheckBox::stateChanged, this, &MainWindow::handlePlotCount);
     connect(ui->checkBox_2, &QCheckBox::stateChanged, this, &MainWindow::draw);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::draw);
@@ -66,16 +66,25 @@ void MainWindow::handleEnvironment() {
     draw();
 }
 
+void MainWindow::handlePlotCount() {
+    ui->checkBox_2->setEnabled(ui->checkBox->isChecked());
+    ui->checkBox_2->setChecked(!ui->checkBox->isChecked() ? false : ui->checkBox_2->isChecked());
+    draw();
+}
+
 void MainWindow::draw() {
     ui->graphicsView->chart()->removeSeries(s1);
+    s1->clear();
     ui->graphicsView->chart()->removeSeries(s2);
+    s2->clear();
 
     if (ui->checkBox->isChecked()) {
-        draw1();
-        draw2();
+            if (ui->checkBox_2->isChecked()) {
+                draw1();
+            }
+            draw2();
     } else {
-        draw1();
-        s2->clear();
+            draw1();
     }
 
     ui->graphicsView->chart()->addSeries(s1);
@@ -84,8 +93,6 @@ void MainWindow::draw() {
 }
 
 void MainWindow::draw1() {
-    s1->clear();
-
     double V0 = ui->lineEdit->text().replace(',', '.').toDouble();
     double U = ui->lineEdit_2->text().replace(',', '.').toDouble();
     double h = ui->lineEdit_3->text().replace(',', '.').toDouble();
@@ -137,7 +144,7 @@ void MainWindow::draw2() {
     p0 = 0;
     double tDv = Dv;
     Dv = 0;
-    s2->clear();
+
     double V0 = ui->lineEdit->text().replace(',', '.').toDouble();
     double U = ui->lineEdit_2->text().replace(',', '.').toDouble();
     double h = ui->lineEdit_3->text().replace(',', '.').toDouble();

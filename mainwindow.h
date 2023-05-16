@@ -28,6 +28,7 @@ private:
 public slots:
     void handleMaterial();
     void handleEnvironment();
+    void handlePlotCount();
 
     void draw();
     void draw1();

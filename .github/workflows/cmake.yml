@@ -45,7 +45,7 @@ jobs:
 
     - name: Deploy
       shell: cmd
-      run: 'windeployqt "${{github.workspace}}/inst/example.exe"'
+      run: 'windeployqt "${{github.workspace}}/inst/bodymoving.exe"'
 
     - name: Upload
       uses: actions/upload-artifact@v1
