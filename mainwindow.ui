@@ -405,7 +405,7 @@
        <item>
         <widget class="QLabel" name="label_13">
          <property name="text">
-          <string>5) разница высот без/с сопр.</string>
+          <string>5) разница точек падения</string>
          </property>
         </widget>
        </item>
