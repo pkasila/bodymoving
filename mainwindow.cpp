@@ -93,48 +93,49 @@ void MainWindow::draw() {
 }
 
 void MainWindow::draw1() {
-    double V0 = ui->lineEdit->text().replace(',', '.').toDouble();
-    double U = ui->lineEdit_2->text().replace(',', '.').toDouble();
+    double velocity = ui->lineEdit->text().replace(',', '.').toDouble();
+    double phi = ui->lineEdit_2->text().replace(',', '.').toDouble();
     double h = ui->lineEdit_3->text().replace(',', '.').toDouble();
     double r = ui->lineEdit_4->text().replace(',', '.').toDouble();
     double y = ui->lineEdit_5->text().replace(',', '.').toDouble();
     int n = ui->lineEdit_6->text().toInt();
 
-    double T = 0;
-    double Vx = V0 * cos(U * acos(-1) / 180);
-    double Vy = V0 * sin(U * acos(-1) / 180);
-    double K = (4.5 * Dv / r + 0.15 * p0 * sqrt(Vx * Vx + Vy * Vy)) / (p * r);
+    double t = 0;
+    double velocityX = velocity * cos(phi * acos(-1) / 180);
+    double velocityY = velocity * sin(phi * acos(-1) / 180);
+    double K = (4.5 * Dv / r + 0.15 * p0 * sqrt(velocityX * velocityX + velocityY * velocityY)) / (p * r);
     double x = 0;
     double y0 = y;
-    double X = -10, Tp = 0, Y = -100, Ty = 0;
+    double X = -INT_MAX, tx = 0;
+    double Y = -INT_MAX, ty = 0;
 
     s1->append(x, y);
 
     for (int i = 0; i < n; i++) {
-        T += h;
-        double Vx2 = y < 0 ? 0 : (1 - K * h) * Vx;
-        double Vy2 = (p0 / p - 1) * 9.81 * h + (1 - K * h) * Vy;
-        K = (4.5 * Dv / r + 0.15 * p0 * sqrt(Vx * Vx + Vy * Vy)) / (p * r);
-        x += Vx2 == 0 ? 0 : Vx * h;
-        Vx = Vx2;
+        t += h;
+        double velocityX2 = y < 0 ? 0 : (1 - K * h) * velocityX;
+        double velocityY2 = (p0 / p - 1) * 9.81 * h + (1 - K * h) * velocityY;
+        K = (4.5 * Dv / r + 0.15 * p0 * sqrt(velocityX * velocityX + velocityY * velocityY)) / (p * r);
+        x += velocityX2 == 0 ? 0 : velocityX * h;
+        velocityX = velocityX2;
         double ty = y;
-        y += Vx2 == 0 ? 0 : Vy * h;
+        y += velocityX2 == 0 ? 0 : velocityY * h;
         if (y > Y) {
             Y = y;
-            Ty = T;
+            ty = t;
         }
-        if (X == -10 && (y < 0 && ty > 0) || (y > 0 && ty < 0)) {
+        if (X < 0 && (y < 0 && ty > 0) || (y > 0 && ty < 0)) {
             X = x;
-            Tp = T;
+            tx = t;
         }
-        Vy = Vy2;
+        velocityY = velocityY2;
         s1->append(x, (y > y0 || ui->radioButton_2->isChecked()) ? y : y0);
     }
 
     ui->lineEdit_7->setText(QString::number(X));
-    ui->lineEdit_8->setText(QString::number(Tp));
+    ui->lineEdit_8->setText(QString::number(tx));
     ui->lineEdit_9->setText(QString::number(Y));
-    ui->lineEdit_10->setText(QString::number(Ty));
+    ui->lineEdit_10->setText(QString::number(ty));
 
     Xmax = X;
 }
@@ -145,36 +146,36 @@ void MainWindow::draw2() {
     double tDv = Dv;
     Dv = 0;
 
-    double V0 = ui->lineEdit->text().replace(',', '.').toDouble();
-    double U = ui->lineEdit_2->text().replace(',', '.').toDouble();
+    double velocity = ui->lineEdit->text().replace(',', '.').toDouble();
+    double phi = ui->lineEdit_2->text().replace(',', '.').toDouble();
     double h = ui->lineEdit_3->text().replace(',', '.').toDouble();
     double r = ui->lineEdit_4->text().replace(',', '.').toDouble();
-    int n = ui->lineEdit_6->text().toInt();
     double y = ui->lineEdit_5->text().replace(',', '.').toDouble();
+    int n = ui->lineEdit_6->text().toInt();
 
-    double T = 0;
-    double Vx = V0 * cos(U * acos(-1) / 180);
-    double Vy = V0 * sin(U * acos(-1) / 180);
-    double K = (4.5 * Dv / r + 0.15 * p0 * sqrt(Vx * Vx + Vy * Vy)) / (p * r);
+    double t = 0;
+    double velocityX = velocity * cos(phi * acos(-1) / 180);
+    double velocityY = velocity * sin(phi * acos(-1) / 180);
+    double K = (4.5 * Dv / r + 0.15 * p0 * sqrt(velocityX * velocityX + velocityY * velocityY)) / (p * r);
     double x = 0;
-    double X = -10;
+    double X = -INT_MAX;
 
     s2->append(x, y);
 
     for (int i = 0; i < n; i++) {
-        T += h;
-        double Vx2 = y < 0 ? 0 : (1 - K * h) * Vx;
-        double Vy2 = (p0 / p - 1) * 9.81 * h + (1 - K * h) * Vy;
-        K = (4.5 * Dv / r + 0.15 * p0 * sqrt(Vx * Vx + Vy * Vy)) / (p * r);
-        x += Vx2 == 0 ? 0 : Vx * h;
-        Vx = Vx2;
+        t += h;
+        double velocityX2 = y < 0 ? 0 : (1 - K * h) * velocityX;
+        double velocityY2 = (p0 / p - 1) * 9.81 * h + (1 - K * h) * velocityY;
+        K = (4.5 * Dv / r + 0.15 * p0 * sqrt(velocityX * velocityX + velocityY * velocityY)) / (p * r);
+        x += velocityX2 == 0 ? 0 : velocityX * h;
+        velocityX = velocityX2;
         double ty = y;
-        y += Vx2 == 0 ? 0 : Vy * h;
+        y += velocityX2 == 0 ? 0 : velocityY * h;
 
-        if (X == -10 && (y < 0 && ty > 0) || (y > 0 && ty < 0)) {
+        if (X < 0 && (y < 0 && ty > 0) || (y > 0 && ty < 0)) {
             X = x;
         }
-        Vy = Vy2;
+        velocityY = velocityY2;
 
         s2->append(x, y);
     }
