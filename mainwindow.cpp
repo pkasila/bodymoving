@@ -118,13 +118,13 @@ void MainWindow::draw1() {
         K = (4.5 * Dv / r + 0.15 * p0 * sqrt(velocityX * velocityX + velocityY * velocityY)) / (p * r);
         x += velocityX2 == 0 ? 0 : velocityX * h;
         velocityX = velocityX2;
-        double ty = y;
+        double tempY = y;
         y += velocityX2 == 0 ? 0 : velocityY * h;
         if (y > Y) {
             Y = y;
             ty = t;
         }
-        if (X < 0 && (y < 0 && ty > 0) || (y > 0 && ty < 0)) {
+        if (X < 0 && (y < 0 && tempY > 0) || (y > 0 && tempY < 0)) {
             X = x;
             tx = t;
         }
@@ -169,10 +169,10 @@ void MainWindow::draw2() {
         K = (4.5 * Dv / r + 0.15 * p0 * sqrt(velocityX * velocityX + velocityY * velocityY)) / (p * r);
         x += velocityX2 == 0 ? 0 : velocityX * h;
         velocityX = velocityX2;
-        double ty = y;
+        double tempY = y;
         y += velocityX2 == 0 ? 0 : velocityY * h;
 
-        if (X < 0 && (y < 0 && ty > 0) || (y > 0 && ty < 0)) {
+        if (X < 0 && (y < 0 && tempY > 0) || (y > 0 && tempY < 0)) {
             X = x;
         }
         velocityY = velocityY2;
